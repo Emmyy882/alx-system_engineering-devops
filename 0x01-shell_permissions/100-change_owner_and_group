@@ -1,0 +1,2 @@
+#!/bin/bah
+chown -R vincent:staff ./
