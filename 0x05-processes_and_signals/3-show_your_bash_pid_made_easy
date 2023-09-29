@@ -3,5 +3,5 @@
 pid=$(pgrep -f bash)
 for pids in $pid; do
 	process_name=$(cat /proc/$pid/cmdline | tr '\0' ' ' | sed 's/ $//')
-	echo "PID: $pid, process Name: $process_name"
+	echo "$pid$process_name"
 done
