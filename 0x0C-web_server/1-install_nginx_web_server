@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Install nginx web server
 
-# update and upgrade the terminal packages
+# update packages
 sudo apt-get update -y
 
 # Installing nginx
