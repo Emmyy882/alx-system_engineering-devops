@@ -23,7 +23,7 @@ SERVER_CONFIG=\
 	}
 
 	if (\$request_filename ~ redirect_me){
-		rewrite ^ https://sketchfab.com/bluepeno/models permanent;
+		rewrite ^ https://www.goggle.com/bluepeno/models permanent;
 	}
 
 	error_page 404 /404.html;
