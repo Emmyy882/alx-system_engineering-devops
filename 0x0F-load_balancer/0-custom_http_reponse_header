@@ -1,46 +1,16 @@
 #!/usr/bin/env bash
-# configure web-02 to be identical to web-01
-# The name of the custom HTTP header must be X-Served-By
-
-# Update packages and install Nginx
-sudo apt-get -y update
+# Double the number of webservers.
+sudo apt-get update
 sudo apt-get -y install nginx
-
-# Allow Nginx HTTP traffic in port 80
-sudo ufw allow 'Nginx HTTP'
-
-# Create the necessary directories and set permissions
-sudo mkdir -p /var/wwi/html /var/www/error
-sudo chmod -R 755 /var/www
-
-# Create index and 404 pages
-echo 'Hello World!' | sudo tee /var/www/html/index.html >/dev/null
-echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html >/dev/null
-
-# Configure Nginx with custom header
-server_config=$(cat <<EOF
-server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    root /var/www/html;
-    index index.html index.htm index.nginx-debian.html;
-    server_name _;
-    add_header X-Served-By \$hostname;
-    location / {
-        try_files \$uri \$uri/ =404;
-    }
-    if (\$request_filename ~ redirect_me) {
-        rewrite ^ https://youtube.com permanent;
-    }
-    error_page 404 /404.html;
-    location = /404.html {
-        internal;
-    }
-}
-EOF
-)
-
-echo "$server_config" | sudo tee /etc/nginx/sites-enabled/default >/dev/null
-
-# Restart Nginx service
+sudo chown $USER:$USER /var/www/html/index.html
+sudo touch index.html /var/www/html/
+echo 'Holberton School' > /var/www/html/index.html
+sudo mkdir /var/www/error
+sudo chown  $USER:$USER /var/www/error/
+echo "Ceci n'est pas une page" > /var/www/error/404.html
+sudo chown  $USER:$USER /etc/nginx/sites-available/
+sed -i '/server_name _/a location /redirect_me { rewrite ^ https://www.youtube.com/watch?v=QH2-TGUlw\u4? permanent; }' /etc/nginx/sites-available/default
+sed -i '/server_name _/a error_page 404 /404.html; location = /404.html {root /var/www/error/; internal; }' /etc/nginx/sites-available/default
+# in the server 1 also 2 this down
+sudo sed -i "/server_name _/a add_header X-Served-By $HOSTNAME;" /etc/nginx/sites-available/default
 sudo service nginx restart
