@@ -1,0 +1,2 @@
+-A PREROUTING -t nat -p tcp --dport 8080 -j REDIRECT --to-ports 80
+COMMIT
