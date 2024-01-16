@@ -3,13 +3,9 @@
 import requests
 
 
-BASE_URL = 'https://www.reddit.com/r/{}/hot/.json'.format(subreddit)
-'''Reddit's base API URL.
-'''
-
-
 def number_of_subscribers(subreddit):
     '''Retrieves the number of subscribers in a given subreddit.'''
+    BASE_URL = 'https://www.reddit.com/r/{}/hot/.json'.format(subreddit)
     api_headers = {
         'Accept': 'application/json',
         'User-Agent': ' '.join([
